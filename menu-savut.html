@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — Sa vut da be? · Cervia</title>
+<meta name="description" content="Menu Sa vut da be? Cervia: cocktail, spritz, birre, vini, bar caffetteria. Surf Bar del Borgo Marina">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=League+Gothic&display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+/* ═══════════════════════════════════════
+   PALETTE — modifica solo questi valori
+   ═══════════════════════════════════════ */
+:root {
+  --c-bg:       #ffd97a;
+  --c-surface:  #fff3d5;
+  --c-text:     #1a1040;
+  --c-muted:    #070a39;
+  --c-accent:   #2a479e;
+  --c-accent2:  #3a89de;
+  --c-border:   rgba(24, 24, 26, 0.1);
+
+  --f-display: 'League Gothic', sans-serif;
+  --f-body:    'DM Sans', system-ui, sans-serif;
+
+  --r-card: 16px;
+  --r-pill: 100px;
+  --shadow:       0 2px 20px rgba(71, 12, 1, 0.10);
+  --shadow-hover: 0 8px 32px rgba(71, 12, 1, 0.35);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--f-body);
+  background: var(--c-bg);
+  color: var(--c-text);
+  min-height: 100vh;
+  padding-bottom: 100px;
+  overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  padding: 60px 24px 40px;
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 40%, color-mix(in srgb, var(--c-accent) 18%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 60%, color-mix(in srgb, var(--c-accent2) 12%, transparent), transparent 70%);
+  pointer-events: none;
+}
+.hero-label {
+  display: inline-block;
+  font-family: var(--f-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  border: 1px solid var(--c-accent);
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero h1 {
+  font-family: var(--f-display);
+  font-size: clamp(56px, 9vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  animation: fadeUp 0.5s 0.1s ease both;
+}
+.hero h1 span { color: var(--c-accent); }
+.hero-sub {
+  margin-top: 16px;
+  font-size: 16px;
+  color: var(--c-muted);
+  font-weight: 300;
+  animation: fadeUp 0.5s 0.2s ease both;
+}
+.hero-note {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--c-muted);
+  font-style: italic;
+  animation: fadeUp 0.5s 0.25s ease both;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  background: var(--c-text);
+  color: var(--c-bg);
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: var(--r-pill);
+  transition: transform 0.2s, background 0.2s;
+  animation: fadeUp 0.5s 0.3s ease both;
+}
+.hero-cta:hover { background: var(--c-accent); transform: scale(1.03); }
+
+/* LAYOUT */
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* SECTION HEADER */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 56px 0 24px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease both;
+}
+.section-header h2 {
+  font-family: var(--f-display);
+  font-size: clamp(32px, 5vw, 40px);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.section-header .count { font-size: 12px; color: var(--c-muted); }
+.section-divider { flex: 1; height: 1px; background: var(--c-border); }
+
+/* GRID CARD */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+@media (max-width: 480px) { .menu-grid { grid-template-columns: 1fr; } }
+
+.menu-card {
+  background: var(--c-surface);
+  border-radius: var(--r-card);
+  padding: 18px 20px;
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s;
+  opacity: 0;
+  animation: fadeUp 0.5s ease both;
+}
+.menu-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: var(--shadow-hover); }
+.menu-card { animation-delay: calc(var(--i, 0) * 0.055s); }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.card-name { font-family: var(--f-display); font-size: 28px; font-weight: 700; line-height: 1.20; }
+.card-price { font-family: var(--f-display); font-size: 26px; font-weight: 700; color: var(--c-accent); white-space: nowrap; flex-shrink: 0; }
+.card-price-double { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.card-price-double .pl { font-size: 12px; color: var(--c-muted); line-height: 1; }
+.card-price-double .pv { font-family: var(--f-display); font-size: 14px; font-weight: 700; color: var(--c-accent); }
+.card-desc { font-size: 12px; color: var(--c-muted); line-height: 1.55; font-weight: 300; }
+
+/* LIST (bar / cantina) */
+.list-section { display: flex; flex-direction: column; }
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--c-border);
+  opacity: 0;
+  animation: fadeUp 0.4s ease both;
+}
+.list-row { animation-delay: calc(var(--i, 0) * 0.04s); }
+.list-row:last-child { border-bottom: none; }
+.list-name { font-family: var(--f-display); font-size: 24px; font-weight: 400; flex: 1; }
+.list-price { font-family: var(--f-display); font-size: 20px; font-weight: 700; color: var(--c-accent); white-space: nowrap; }
+.list-price-double { display: flex; gap: 10px; align-items: baseline; flex-shrink: 0; }
+.list-price-double .lpl { font-size: 12px; color: var(--c-muted); }
+
+/* SOTTOSEZIONE CANTINA */
+.sub-heading {
+  font-family: var(--f-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin: 28px 0 10px;
+}
+.sub-heading:first-child { margin-top: 0; }
+
+/* INFO BLOCK */
+.info-block {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-accent);
+  border-radius: 0 var(--r-card) var(--r-card) 0;
+  padding: 14px 18px;
+  margin-top: 28px;
+  font-size: 13px;
+  color: var(--c-muted);
+  line-height: 1.65;
+}
+
+/* STATO LOADING / ERRORE */
+.state-msg {
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--c-muted);
+  font-size: 15px;
+}
+.state-msg strong {
+  display: block;
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--c-text);
+  margin-bottom: 10px;
+}
+
+/* MAPPA */
+.map-section { margin-top: 56px; }
+.map-section h2 { font-family: var(--f-display); font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.map-section p { font-size: 14px; color: var(--c-muted); margin-bottom: 16px; }
+.map-wrap { border-radius: var(--r-card); overflow: hidden; border: 1px solid var(--c-border); }
+.map-link { display: inline-block; margin-top: 12px; font-size: 13px; color: var(--c-accent); text-decoration: none; font-weight: 500; }
+.map-link:hover { text-decoration: underline; }
+
+/* STICKY */
+.sticky-bar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 99; animation: slideUp 0.6s 0.8s ease both; opacity: 0; }
+.sticky-bar a {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--c-accent); color: #fff;
+  text-decoration: none;
+  font-family: var(--f-display); font-weight: 700; font-size: 16px;
+  padding: 14px 28px; border-radius: var(--r-pill);
+  box-shadow: 0 4px 24px color-mix(in srgb, var(--c-accent) 45%, transparent);
+  transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap;
+}
+.sticky-bar a:hover { transform: scale(1.04) translateY(-1px); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Surf Bar - via Nazario Sauro 52 · Cervia RA</div>
+  <h1>Sa vut <span>da be?</span></h1>
+  <p class="hero-sub">Bar · Cocktail · Spritz · Birre · Vini · Caffetteria</p>
+  <!-- <p class="hero-note">Utilizziamo premix fatti con frutta fresca e puree. Alcuni gusti sono soggetti a stagionalità.</p> -->
+  <a href="tel:3517993723" class="hero-cta">📞 351 799 3723</a>
+</div>
+
+<div class="container" id="menu-root">
+  <div class="state-msg">
+    <strong>Caricamento menu…</strong>
+    Un momento solo.
+  </div>
+</div>
+
+<div class="sticky-bar">
+  <a href="tel:3517993723">📞 Ordina ora</a>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   CONFIGURAZIONE
+   ═══════════════════════════════════════════════════════
+   Sostituisci SHEET_ID con l'ID del tuo Google Sheet.
+   L'ID è la stringa lunga nell'URL del foglio, tra /d/ e /edit:
+   https://docs.google.com/spreadsheets/d/ [QUESTO] /edit
+
+   SHEET_NAME è il nome del foglio (tab in basso).
+   Di default Google chiama il primo foglio "Foglio1".
+   ═══════════════════════════════════════════════════════ */
+// === CONFIGURAZIONE URL ===
+// Per aggiornarlo: Google Sheets → File → Condividi e pubblica → CSV → copia il nuovo URL
+// Assicurati che "Ripubblica automaticamente in caso di modifiche" sia attivo.
+
+/* ═══════════════════════════════════════════════════════
+   SEZIONI — ordine e layout per ogni categoria
+   -------------------------------------------------------
+   type 'grid' → card layout (cocktail, spritz, ecc.)
+   type 'list' → layout lineare compatto (bar, cantina)
+   label1/label2 → etichette per il doppio prezzo
+   ═══════════════════════════════════════════════════════ */
+const SECTIONS = [
+  { cat: 'Caribbean',              type: 'grid', label1: '',          label2: ''       },
+  { cat: 'La Spritzeria',          type: 'grid', label1: '',          label2: ''       },
+  { cat: 'Alcohol free Drink',     type: 'grid', label1: '',          label2: ''       },
+  { cat: 'Long Island Family',     type: 'grid', label1: '',          label2: ''       },
+  { cat: 'Old School',             type: 'grid', label1: '',          label2: ''       },
+  { cat: 'Quelli strani',          type: 'grid', label1: '',          label2: ''       },
+  { cat: 'Gli speciali della casa',type: 'grid', label1: '',          label2: ''       },
+  { cat: 'Birre alla spina',       type: 'list', label1: 'piccola',   label2: 'media'  },
+  { cat: 'Birra in lattina',       type: 'list', label1: '',          label2: ''       },
+  { cat: 'Bar caffetteria',        type: 'list', label1: 'piccolo',   label2: 'grande' },
+  { cat: 'la Cantina',             type: 'list', label1: 'bottiglia', label2: 'calice' },
+];
+
+/* ═══════════════════════════════════════════════════════
+   PARSE CSV
+   Gestisce virgolette RFC 4180, newline, virgole in celle
+   ═══════════════════════════════════════════════════════ */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cur = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"' && text[i+1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQ = false;
+      else cur += ch;
+    } else {
+      if (ch === '"') { inQ = true; }
+      else if (ch === ',') { row.push(cur.trim()); cur = ''; }
+      else if (ch === '\n') { row.push(cur.trim()); rows.push(row); row = []; cur = ''; }
+      else if (ch === '\r') { /* skip */ }
+      else cur += ch;
+    }
+  }
+  if (cur || row.length) { row.push(cur.trim()); rows.push(row); }
+  return rows;
+}
+
+/* ═══════════════════════════════════════════════════════
+   FETCH DA GOOGLE SHEETS (CSV pubblico)
+   ═══════════════════════════════════════════════════════ */
+async function fetchMenu() {
+  // === USA DIRETTAMENTE IL LINK PUBBLICATO ===
+  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq3YaSLmKakwpAEN0GrUacS4yEDIylfeiFKkwqG1QcDma7wzO_z8M7Eh2IHAkicQ/pub?gid=378987261&single=true&output=csv";
+
+  try {
+    const res = await fetch(csvUrl, {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} — controlla che il foglio sia pubblicato come CSV.`);
+    }
+
+    const csvText = await res.text();
+    return parseCSV(csvText);
+
+  } catch (error) {
+    console.error("Errore fetch menu:", error);
+    throw error;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   NORMALIZZA DATI
+   Gestisce sia il modello "categoria su ogni riga"
+   sia il modello "categoria come riga-intestazione"
+   (propagazione verso il basso)
+   ═══════════════════════════════════════════════════════ */
+function normalizeRows(rows) {
+  if (rows.length < 2) return [];
+
+  // Normalizza intestazioni: rimuove spazi, corregge refusi
+  const header = rows[0].map(h =>
+    (h || '').toLowerCase().replace(/\s+/g, '').replace('sootocategoria', 'sottocategoria')
+  );
+  const iCat  = header.findIndex(h => h.includes('categ'));
+  const iNome = header.findIndex(h => h === 'nome');
+  const iDesc = header.findIndex(h => h.includes('descr'));
+  const iP1   = header.findIndex(h => h === 'prezzo');
+  const iP2   = header.findIndex(h => h === 'prezzo2');
+  const iSub  = header.findIndex(h => h.includes('sottoc'));
+
+  const items = [];
+  let lastCat = '';
+
+  for (let r = 1; r < rows.length; r++) {
+    const row  = rows[r];
+    const cat  = (iCat  >= 0 ? row[iCat]  || '' : '').trim();
+    const nome = (iNome >= 0 ? row[iNome] || '' : '').trim();
+    const desc = (iDesc >= 0 ? row[iDesc] || '' : '').trim();
+    let   p1   = (iP1   >= 0 ? String(row[iP1]  || '') : '').trim();
+    let   p2   = (iP2   >= 0 ? String(row[iP2]  || '') : '').trim();
+    const sub  = (iSub  >= 0 ? row[iSub] || '' : '').trim();
+
+    // Aggiorna categoria corrente (propagazione verso il basso)
+    if (cat) lastCat = cat;
+
+    // Salta righe senza nome (intestazioni residue, righe vuote, riga "Bar caffetteria")
+    if (!nome) continue;
+
+    // Salta stringhe non-numeriche nelle colonne prezzo
+    // (es. "Piccola", "Bottiglia" — rimaste da righe-intestazione del foglio)
+    if (p1 && isNaN(parseFloat(p1.replace(',', '.')))) p1 = '';
+    if (p2 && isNaN(parseFloat(p2.replace(',', '.')))) p2 = '';
+
+    // Fix Guinness: prezzo solo in p2, p1 vuoto → sposta in p1
+    if (!p1 && p2) { p1 = p2; p2 = ''; }
+
+    // Ignora descrizione che è in realtà un orario (es. "fino alle 22")
+    const cleanDesc = /^fino alle/i.test(desc) ? '' : desc;
+
+    items.push({ cat: lastCat, nome, desc: cleanDesc, p1, p2, sub });
+  }
+  return items;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER HELPERS
+   ═══════════════════════════════════════════════════════ */
+function fmtPrice(p) {
+  return p ? `€${p.replace('.', ',')}` : '';
+}
+
+function cardHTML(item, i, label1, label2) {
+  const hasDouble = item.p2 !== '';
+  const priceEl = hasDouble
+    ? `<div class="card-price-double">
+         <span class="pl">${label1}</span><span class="pv">${fmtPrice(item.p1)}</span>
+         <span class="pl">${label2}</span><span class="pv">${fmtPrice(item.p2)}</span>
+       </div>`
+    : `<span class="card-price">${fmtPrice(item.p1)}</span>`;
+  return `
+    <div class="menu-card" style="--i:${i}">
+      <div class="card-top">
+        <span class="card-name">${item.nome}</span>${priceEl}
+      </div>
+      ${item.desc ? `<p class="card-desc">${item.desc}</p>` : ''}
+    </div>`;
+}
+
+function listRowHTML(item, i, label1, label2) {
+  const hasDouble = item.p2 !== '';
+  const priceEl = hasDouble
+    ? `<div class="list-price-double">
+         <span class="lpl">${label1}</span><span class="list-price">${fmtPrice(item.p1)}</span>
+         <span class="lpl">${label2}</span><span class="list-price">${fmtPrice(item.p2)}</span>
+       </div>`
+    : `<span class="list-price">${fmtPrice(item.p1)}</span>`;
+  return `
+    <div class="list-row" style="--i:${i}">
+      <span class="list-name">${item.nome}</span>${priceEl}
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER MENU COMPLETO
+   ═══════════════════════════════════════════════════════ */
+function renderMenu(items) {
+  const root = document.getElementById('menu-root');
+  let html = '';
+
+  SECTIONS.forEach((sec, secIdx) => {
+    // Trova le voci di questa categoria
+    // Usa startsWith per tollerare "Bar caffetteria " con spazio finale
+    const voci = items.filter(it => it.cat.trim().toLowerCase() === sec.cat.toLowerCase());
+    if (!voci.length) return;
+
+    const delay = `${(secIdx * 0.05).toFixed(2)}s`;
+
+    html += `
+      <div class="section-header" style="animation-delay:${delay}">
+        <h2>${sec.cat}</h2>
+        <div class="section-divider"></div>
+        <span class="count">${voci.length} ${voci.length === 1 ? 'voce' : 'voci'}</span>
+      </div>`;
+
+    if (sec.type === 'grid') {
+      html += `<div class="menu-grid">`;
+      voci.forEach((item, i) => { html += cardHTML(item, i, sec.label1, sec.label2); });
+      html += `</div>`;
+
+    } else {
+      // Layout lista — raggruppa per sottocategoria se presente
+      const hasSub = voci.some(v => v.sub);
+      if (hasSub) {
+        const subs = {};
+        voci.forEach(v => {
+          const k = v.sub || '__none__';
+          if (!subs[k]) subs[k] = [];
+          subs[k].push(v);
+        });
+        Object.entries(subs).forEach(([subKey, subVoci]) => {
+          if (subKey !== '__none__') {
+            html += `<div class="sub-heading">${subKey}</div>`;
+          }
+          html += `<div class="list-section">`;
+          subVoci.forEach((item, i) => { html += listRowHTML(item, i, sec.label1, sec.label2); });
+          html += `</div>`;
+        });
+      } else {
+        html += `<div class="list-section">`;
+        voci.forEach((item, i) => { html += listRowHTML(item, i, sec.label1, sec.label2); });
+        html += `</div>`;
+      }
+    }
+
+    // Note informative per sezioni specifiche
+    if (sec.cat === 'Birra in lattina') {
+      html += `<div class="info-block">La nostra selezione di artigianali in lattina — anche gluten free. Chiedi o dai un'occhiata al frigo. Consulta la nostra <strong>lista gin premium</strong>.</div>`;
+    }
+    if (sec.cat === 'Bar caffetteria') {
+      html += `<div class="info-block">Bar caffetteria aperto <strong>fino alle 22</strong>.</div>`;
+    }
+  });
+
+  // Mappa
+  html += `
+    <div class="map-section">
+      <h2>Dove siamo</h2>
+      <p>Viale Nazario Sauro 52, Cervia RA</p>
+      <div class="map-wrap">
+        <iframe src="https://maps.google.com/maps?q=Sa+vut+da+be+Cervia&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          width="100%" height="300" style="border:0;" loading="lazy" title="Mappa"></iframe>
+      </div>
+      <a href="https://maps.app.goo.gl/iz2NZprbKapzTNZb6" target="_blank" rel="noopener" class="map-link">Apri su Google Maps →</a>
+    </div>`;
+
+  root.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════ */
+(async () => {
+  const root = document.getElementById('menu-root');
+  try {
+    const rows = await fetchMenu();
+    const items = normalizeRows(rows);
+    if (!items.length) throw new Error('Nessuna voce trovata. Controlla la struttura del foglio.');
+    renderMenu(items);
+  } catch (err) {
+    root.innerHTML = `
+      <div class="state-msg">
+        <strong>Impossibile caricare il menu</strong>
+        ${err.message}<br><br>
+        <small>Controlla: 1) CSV_URL corretto 2) Foglio pubblicato come CSV su Google Sheets 3) "Ripubblica automaticamente" attivo</small>
+      </div>`;
+  }
+})();
+</script>
+</body>
+</html>
